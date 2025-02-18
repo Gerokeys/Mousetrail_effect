@@ -3,30 +3,31 @@ const cxt = canvas.getContext("2d");
 
 let mouseMoved = false;
 
+const pointer = {
+  x: 0.5 * window.innerWidth,
+  y: 0.5 * window.innerHeight,
+};
+
 const params = {
-  pointsNumber: 20,
-  widthFactor: 10,
-  mousethreshold: 0.3,
-  spring: 0.25,
+  pointsNumber: 5,
+  widthFactor: 20,
+  mousethreshold: 15,
+  spring: 0.2,
   friction: 0.5,
 };
 
-// Ensure canvas is set up before using dimensions
-setupCanvas();
-
-const pointer = {
-  x: 0.5 * canvas.width,
-  y: 0.5 * canvas.height,
-};
-
-const trail = new Array(params.pointsNumber).fill().map(() => ({
-  x: pointer.x,
-  y: pointer.y,
-  dx: 0,
-  dy: 0,
-}));
-
-window.addEventListener("click", (e) => updateMousePosition(e.pageX, e.pageY));
+const trail = new Array(params.pointsNumber);
+for (let i = 0; i < params.pointsNumber; i++) {
+  trail[i] = {
+    x: pointer.x,
+    y: pointer.y,
+    dx: 0,
+    dy: 0,
+  };
+}
+window.addEventListener("click", (e) => {
+  updateMousePosition(e.pageX, e.pageY);
+});
 window.addEventListener("mousemove", (e) => {
   mouseMoved = true;
   updateMousePosition(e.pageX, e.pageY);
@@ -41,23 +42,24 @@ function updateMousePosition(ex, ey) {
   pointer.y = ey;
 }
 
-window.addEventListener("resize", setupCanvas);
+setupCanvas();
 update(0);
+window.addEventListener("resize", setupCanvas);
 
 function update(t) {
   if (!mouseMoved) {
     pointer.x =
-      0.5 * canvas.width + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t) * canvas.width;
+      (0.5 + 0.3 * Math.cos(0.002 * t)) * Math.sin(0.005* t) *
+      window.innerWidth;
     pointer.y =
-      0.5 * canvas.height + 0.3 * Math.cos(0.005 * t) * Math.sin(0.01 * t) * canvas.height;
+      (0.5 + 0.2 * Math.sin(0.005 * t)) * Math.cos(0.01 * t) *
+      window.innerHeight;
   }
 
   cxt.clearRect(0, 0, canvas.width, canvas.height);
-  
   trail.forEach((p, pIdx) => {
     const prev = pIdx === 0 ? pointer : trail[pIdx - 1];
     const spring = pIdx === 0 ? 0.4 * params.spring : params.spring;
-    
     p.dx += (prev.x - p.x) * spring;
     p.dy += (prev.y - p.y) * spring;
     p.dx *= params.friction;
@@ -77,13 +79,15 @@ function update(t) {
   cxt.moveTo(trail[0].x, trail[0].y);
 
   for (let i = 1; i < trail.length - 1; i++) {
-    const xc = 0.5 * (trail[i].x + trail[i - 1].x);
-    const yc = 0.5 * (trail[i].y + trail[i - 1].y);
+    const xc = 0.5 * (trail[i].x + trail[i + 1].x);
+    const yc = 0.5 * (trail[i].y + trail[i + 1].y);
     cxt.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
     cxt.lineWidth = params.widthFactor * (params.pointsNumber - i);
+    cxt.stroke();
   }
-
+  cxt.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
   cxt.stroke();
+
   window.requestAnimationFrame(update);
 }
 
@@ -91,3 +95,32 @@ function setupCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
+
+const navbar = document.querySelector(".nav-links");
+const burger = document.querySelector(".burger");
+const navLinks = document.querySelectorAll(".nav-links a");
+
+// Toggle mobile menu
+burger.addEventListener("click", () => {
+  navbar.classList.toggle("active");
+  burger.classList.toggle("toggle");
+});
+
+// Close menu when clicking a nav link
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    navbar.classList.remove("active");
+    burger.classList.remove("toggle");
+  });
+});
+// Change nav color on scroll
+window.addEventListener("scroll", () => {
+  const nav = document.querySelector("nav");
+  const nav_links = document.querySelectorAll(".nav-links a");
+  if (window.scrollY > 50) {
+    nav.classList.add("scrolled");
+  } else {
+    nav.classList.remove("scrolled");
+  }
+});
+
