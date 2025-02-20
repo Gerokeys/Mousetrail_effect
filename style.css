@@ -14,7 +14,7 @@ body,
 html {
   overscroll-behavior: none;
   font-family: "Poppins", sans-serif;
-  background-color: #10092c;
+  background-color: #E7E5DE;
   overflow-x: hidden;
 }
 
@@ -34,7 +34,7 @@ nav.scrolled {
   display: none;
   cursor: pointer;
   font-size: 1.5rem;
-  color: white;
+  color: #222222;
   transition: transform 0.3s ease-in-out;
 }
 
@@ -52,13 +52,15 @@ nav.scrolled {
 }
 
 .logo h1 {
-  background: linear-gradient(to top, #cecece 0%, #ffffff 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #222222;
   font-weight: 100;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-family: "LED";
+}
+
+.logo a {
+  text-decoration: none;
+  color: #222222;
 }
 
 .logo h1.scrollled {
