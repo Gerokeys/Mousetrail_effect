@@ -15,15 +15,15 @@
     />
   </head>
   <body>
-    <div class="container container-1">
+    <div class="container container-1 content">
       <div class="header">
         <nav>
           <div class="logo">
-            <h1>Gero</h1>
+            <a href="./index.html"><h1>Gero</h1></a>
           </div>
           <ul class="nav-links">
-            <li><a href="#">Works</a></li>
-            <li><a href="#">About</a></li>
+            <li><a href="./work.html">works</a></li>
+            <li><a href="./about.html">about</a></li>
             <div class="header-button">
               <button>Resume</button>
             </div>
@@ -46,9 +46,9 @@
         class="profile-image"
       />
 
-      <h2>Hello There I am GERALD</h2>
+      <h2>Hello There! I am GERALD</h2>
       <h1>
-        FRONT-END <br />
+        FRONT-END WEB<br />
         DEVELOPER
       </h1>
       <p>
@@ -63,14 +63,61 @@
     <canvas></canvas>
 
     <!-- New Section -->
-    <div class="container container-2">
+    <!-- <div class="container container-2">
       <div class="content">
         <h2>New Section</h2>
         <p>This is a new section below the first one.</p>
       </div>
-    </div>
+    </div> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script>
+      // landing page reveal animation
+      gsap.from(".logo", 2, {
+        opacity: 0,
+        duration: 5,
+        delay: 0.5,
+        y: -50,
+        ease: "power3.inOut",
+      });
+      gsap.from(".burger", {
+        opacity: 0,
+        duration: 1,
+        delay: 1,
+        y: -50,
+      });
+      gsap.from(".landing-text", {
+        opacity: 0,
+        duration: 1,
+        delay: 2,
+        y: -50,
+      });
+
+      gsap.from(".profile-image", {
+        opacity: 0,
+        duration: 1,
+        delay: 2.5,
+        y: -50,
+      });
+
+      gsap.from("button", {
+        opacity: 0,
+        duration: 1,
+        delay: 3,
+        y: -50,
+      });
+
+      gsap.from(".nav-links", {
+        opacity: 0,
+        duration: 1,
+        delay: 3,
+        y: -50,
+      });
+
+    </script>
 
     <script src="./main.js"></script>
-    
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+
+    <script src="https://unpkg.com/split-type"></script>
   </body>
 </html>

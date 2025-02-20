@@ -1,3 +1,17 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const lenis = new Lenis({
+    autoRaf: true,
+    smoothWheel: true,
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
+});
+
 const canvas = document.querySelector("canvas");
 const cxt = canvas.getContext("2d");
 
@@ -49,10 +63,12 @@ window.addEventListener("resize", setupCanvas);
 function update(t) {
   if (!mouseMoved) {
     pointer.x =
-      (0.5 + 0.3 * Math.cos(0.002 * t)) * Math.sin(0.005* t) *
+      (0.5 + 0.3 * Math.cos(0.002 * t)) *
+      Math.sin(0.005 * t) *
       window.innerWidth;
     pointer.y =
-      (0.5 + 0.2 * Math.sin(0.005 * t)) * Math.cos(0.01 * t) *
+      (0.5 + 0.2 * Math.sin(0.005 * t)) *
+      Math.cos(0.01 * t) *
       window.innerHeight;
   }
 
@@ -107,7 +123,7 @@ burger.addEventListener("click", () => {
 });
 
 // Close menu when clicking a nav link
-navLinks.forEach(link => {
+navLinks.forEach((link) => {
   link.addEventListener("click", () => {
     navbar.classList.remove("active");
     burger.classList.remove("toggle");
@@ -116,11 +132,55 @@ navLinks.forEach(link => {
 // Change nav color on scroll
 window.addEventListener("scroll", () => {
   const nav = document.querySelector("nav");
-  const nav_links = document.querySelectorAll(".nav-links a");
+  const navLinks = document.querySelectorAll(".nav-links a");
+  const logo = document.querySelector(".logo h1");
+  const burger = document.querySelector(".burger");
+  const resumeButton = document.querySelectorAll(".header-button buttons");
+
   if (window.scrollY > 50) {
+    navLinks.forEach((link) => link.classList.add("scrollled"));
+    logo.classList.add("scrollled");
     nav.classList.add("scrolled");
+    burger.classList.add("scrollled");
+    resumeButton.forEach((button) => button.classList.add("scrollled"));
   } else {
+    navLinks.forEach((link) => link.classList.remove("scrollled"));
+    logo.classList.remove("scrollled");
     nav.classList.remove("scrolled");
+    burger.classList.remove("scrollled");
+    resumeButton.forEach((button) => button.classList.remove("scrollled"));
   }
 });
+
+// page transition
+if (navigation.addEventListener) {
+  navigation.addEventListener("navigate", (event) => {
+    if (!event.destination.url.includes(document.location.origin)) {
+      return;
+    }
+
+    event.intercept({
+      handler: async () => {
+        const response = await fetch(event.destination.url);
+        const text = await response.text();
+
+        const transition = document.startViewTransition(() => {
+          const body = text.match(/<body[^>]*>([\s\S]*)<\/body>/i)[1];
+          document.body.innerHTML = body;
+
+          const title = text.match(/<title[^>]*>(.*?)<\/title>/i)[1];
+          document.title = title;
+        });
+
+        transition.ready.then(() => {
+          window.scrollTo(0, 0);
+          initializeLenis();
+        });
+      },
+      scroll: "manual",
+    });
+  });
+}
+
+
 

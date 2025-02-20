@@ -26,7 +26,7 @@ nav {
 }
 
 nav.scrolled {
-  background-color: rgba(255, 255, 255, 0.9); /* Whitish background */
+  background-color: rgba(255, 255, 255, 0.95); /* Whitish background */
   transition: background-color 0.3s ease;
 }
 
@@ -38,6 +38,10 @@ nav.scrolled {
   transition: transform 0.3s ease-in-out;
 }
 
+.burger.scrollled {
+  color: rgb(11, 11, 11); /* Dark text color */
+}
+
 .burger.toggle {
   transform: rotate(90deg);
 }
@@ -47,7 +51,7 @@ nav.scrolled {
   width: 100%;
 }
 
-.header h1 {
+.logo h1 {
   background: linear-gradient(to top, #cecece 0%, #ffffff 100%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -55,6 +59,14 @@ nav.scrolled {
   font-weight: 100;
   font-size: 1.5rem;
   font-family: "LED";
+}
+
+.logo h1.scrollled {
+  background: none; /* Remove the gradient background */
+  background-clip: initial; /* Reset background-clip */
+  -webkit-background-clip: initial; /* Reset -webkit-background-clip */
+  -webkit-text-fill-color: initial; /* Reset -webkit-text-fill-color */
+  color: rgb(11, 11, 11); /* Set the text color to black */
 }
 
 .nav-links {
@@ -72,6 +84,21 @@ nav.scrolled {
   font-weight: 500;
   padding: 0.1em;
   transition: all 0.3s;
+}
+
+.nav-links a.scrollled {
+  color: rgb(11, 11, 11); /* Dark text color */
+}
+
+.logo h1.scrollled {
+  color: rgb(11, 11, 11); /* Dark text color */
+}
+
+.header-button button.scrollled,
+.header-buttons button.scrollled {
+  background-color: rgba(113, 47, 255, 0.12); /* Adjust as needed */
+  color: rgb(11, 11, 11); /* Dark text color */
+  border-color: rgba(149, 99, 255, 0.5); /* Adjust as needed */
 }
 
 button {
@@ -113,8 +140,8 @@ button {
 .container-2 {
   min-height: 100vh; /* Makes sure the first section takes the full viewport */
   position: relative; /* Ensure it stays in document flow */
-  color: white;
-  background-color: #fff;
+  color: rgb(9, 9, 9);
+  background-color: #dbdbdb;
 }
 
 .header-button {
@@ -195,6 +222,11 @@ button {
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 0.3em;
+  letter-spacing: -0.05em;
+  background: linear-gradient(to top, #cecece 0%, #ffffff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .landing-text h2 {
@@ -211,7 +243,7 @@ button {
 }
 
 .landing-text button {
-  font-size: .7rem;
+  font-size: 0.7rem;
   transition: all 0.3s ease;
 }
 
@@ -232,21 +264,21 @@ button {
     width: 95%;
     padding: 1em;
   }
-  
+
   .landing-text h1 {
     font-size: 3rem;
   }
-  
+
   .profile-image {
     width: 150px;
     height: 150px;
     margin-bottom: 1.5em;
   }
-  
+
   .landing-text p {
     font-size: 1.2rem;
   }
-  
+
   .landing-text button {
     padding: 1em 2em;
   }
@@ -256,18 +288,46 @@ button {
   .landing-text h1 {
     font-size: 2.5rem;
   }
-  
+
   .landing-text h2 {
     font-size: 1.2rem;
   }
-  
+
   .profile-image {
     width: 120px;
     height: 120px;
   }
-  
+
   .landing-text p {
     font-size: 1rem;
   }
 }
 
+/* keyframs */
+@keyframes move-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-35%);
+  }
+}
+
+@keyframes move-in {
+  0% {
+    clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+  }
+  100% {
+    clip-path: polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%);
+  }
+}
+
+::view-transition-old(root) {
+  animation: 1.5s cubic-bezier(0.87, 0, 0.13, 1) both move-out;
+}
+
+::view-transition-new(root) {
+  animation: 1.5s cubic-bezier(0.87, 0, 0.13, 1) both move-in;
+}
